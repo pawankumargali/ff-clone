@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  emailId         String   @unique @map("email_id")
+  firstName       String   @map("first_name")
+  lastName        String   @map("last_name")
+  profilePic      String?  @map("profile_pic")
+  sub             String   @map("sub")
+  emailVerified   Boolean  @map("email_verified")
+  createdAt       DateTime @default(now()) @map("created_at")
+  meetings        Meeting[]
+  @@map("users")
+}
+
+enum MeetingNoteStatus {
+  NONE
+  RECORDING
+  RECORDED
+  TRANSCRIBED
+  SUMMARIZED
+  FAILED
+}
+
+model Meeting {
+  id              Int           @id @default(autoincrement())
+  userId          Int           @map("user_id")
+  user            User          @relation(fields: [userId], references: [id])
+  title           String
+  link            String?
+  slug            String
+  noteStatus      MeetingNoteStatus @default(NONE)
+  uuid            String        @unique()
+  audioUrl        String?  
+  audioKey        String?
+  transcriptKey   String?
+  transcriptUrl   String?
+  summaryJson     Json?        
+  summaryRawText  String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  @@index([userId, uuid])
+  @@index([userId, slug])
+  @@map("meetings")
+}
+
+
