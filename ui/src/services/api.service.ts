@@ -3,8 +3,8 @@ import type { APICreateMeetingResponse, APIGenerateUploadPresignedUrlResponse } 
 import handleError from "../utils/error.util";
 
 
-export const BASE_URL = 'http://localhost:8081';
-// export const BASE_URL = 'https://ff-api.pawan.fyi';
+// export const BASE_URL = 'http://localhost:8081';
+export const BASE_URL = 'https://ff-api.pawan.fyi';
 
 
 export const API_ENDPOINTS = {
