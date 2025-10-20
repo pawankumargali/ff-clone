@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import webhookService from '../services/webhook.service.js';
-import { User } from '../../generated/prisma/index.js';
 import { APIError } from '../middleware/error.middleware.js';
 import { WebhookBodyParams } from '../middleware/validators/webhook.body.validator.js';
 

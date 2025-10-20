@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../../generated/prisma/index.js';
+import { User } from '@prisma/client';
 
 
 export function generateToken(payload: Partial<User>, secret:string, expiry: number): string {

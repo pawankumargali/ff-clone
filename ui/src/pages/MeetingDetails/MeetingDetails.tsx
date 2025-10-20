@@ -7,6 +7,7 @@ import type {
   Meeting,
   MeetingTranscript,
   MeetingSummary,
+  MeetingNoteStatus,
 } from "../../utils/types.util";
 import { getMeetingNotesStatus, getMeetingTranscript, getUserMeeting } from "../../services/api.service";
 
@@ -25,6 +26,7 @@ export default function MeetingDetails() {
   const [meeting, setMeeting] = useState<Meeting | undefined>(undefined);
   const [meetingSummary, setMeetingSummary] = useState<MeetingSummary | null>(null);
   const [meetingTranscript, setMeetingTranscript] = useState<MeetingTranscript | null>(null);
+  const [meetingNoteStatus, setMeetingNoteStatus] = useState<MeetingNoteStatus | null>(null);
 
   useEffect(() => {
     setMeeting(undefined);
@@ -86,6 +88,20 @@ export default function MeetingDetails() {
     }
   }, [meetingSummary, uuid]);
 
+
+    const fetchMeetingNoteStatus = useCallback(async () => {
+    try {
+      if (!uuid) return;
+      if (meetingNoteStatus=='SUMMARIZED' || meetingNoteStatus=='FAILED') return;
+      const {noteStatus}: Meeting = await getMeetingNotesStatus(uuid);
+      setMeetingNoteStatus(noteStatus);
+    } catch (e) {
+      console.error("Failed to fetch meeting summary", e);
+      setMeetingSummary(null);
+    }
+  }, [meetingSummary, uuid]);
+
+
   useEffect(() => {
     fetchMeeting();
   }, [fetchMeeting]);
@@ -99,6 +115,10 @@ export default function MeetingDetails() {
   }, [fetchMeetingSummary]);
 
   useEffect(() => {
+    fetchMeetingNoteStatus();
+  }, [fetchMeetingNoteStatus]);
+
+  useEffect(() => {
     if (!uuid || meetingSummary) return;
 
     let cancelled = false;
@@ -109,6 +129,7 @@ export default function MeetingDetails() {
       if (cancelled || meetingSummary) return;
       try {
         const status = await getMeetingNotesStatus(uuid);
+        setMeetingNoteStatus(status);
         if (cancelled) return;
 
         if (status === "FAILED") {
@@ -160,8 +181,8 @@ export default function MeetingDetails() {
             {meeting?.link && <p className="subtitle">{meeting.link || <span className="muted">-</span>}</p>}
           </div>
         </div>
-        {meeting?.noteStatus && <div className="right">
-          <StatusPill status={meeting.noteStatus} />
+        {meetingNoteStatus && <div className="right">
+          <StatusPill status={meetingNoteStatus} />
         </div>}
       </header>
 
@@ -169,7 +190,7 @@ export default function MeetingDetails() {
         <div className="meta-grid">
           <div>
             <div className="meta-label">Status</div>
-            {meeting?.noteStatus && <div className="meta-value">{pretty(meeting.noteStatus)}</div>}
+            {meetingNoteStatus && <div className="meta-value">{pretty(meetingNoteStatus)}</div>}
           </div>
           <div>
             <div className="meta-label">Created</div>
@@ -264,10 +285,10 @@ export default function MeetingDetails() {
               )}
             </article>
           )}
-          {(!hasSummaryContent && meeting?.noteStatus) && (
+          {(!hasSummaryContent && meetingNoteStatus) && (
             <Placeholder
               label="Summary not ready yet"
-              helper={statusHint(meeting.noteStatus, "summary")}
+              helper={statusHint(meetingNoteStatus, "summary")}
             />
           )}
         </section>
@@ -292,10 +313,10 @@ export default function MeetingDetails() {
               ))}
             </article>
           )}
-          {(!hasTranscriptSegments && meeting?.noteStatus) && (
+          {(!hasTranscriptSegments && meetingNoteStatus) && (
             <Placeholder
               label="Transcript not ready yet"
-              helper={statusHint(meeting.noteStatus, "transcript")}
+              helper={statusHint(meetingNoteStatus, "transcript")}
             />
           )}
         </section>

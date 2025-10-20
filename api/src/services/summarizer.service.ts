@@ -1,5 +1,5 @@
 import { APIError } from '../middleware/error.middleware.js';
-import { MeetingNoteStatus } from '../../generated/prisma/index.js';
+import { MeetingNoteStatus } from '@prisma/client';
 import db from './database.service.js';
 import meetingService from './meeting.service.js';
 import openai from '../utils/openai.util.js';

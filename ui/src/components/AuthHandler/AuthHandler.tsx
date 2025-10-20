@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useLocation, Outlet, Navigate } from "react-router";
+import { useLocation, Navigate } from "react-router";
 import { isAuthenticated } from "../../services/auth.service";
 
 export default function AuthHandler() {
@@ -14,14 +13,14 @@ export default function AuthHandler() {
   const token = url.searchParams.get("token");
 
   // let redirectToLogin=true;
-  let nextPath="";
+  // let nextPath="";
 
   if(token) {
     try {
       localStorage.setItem("userToken", token);
       url.searchParams.delete("token");
-      const cleanedSearch = url.searchParams.toString();
-      nextPath = `${location.pathname}${cleanedSearch ? `?${cleanedSearch}` : ""}${location.hash || ""}`;
+      // const cleanedSearch = url.searchParams.toString();
+      // nextPath = `${location.pathname}${cleanedSearch ? `?${cleanedSearch}` : ""}${location.hash || ""}`;
     } catch(e) {
       console.log(e);
       alert('login failed. please try again');
