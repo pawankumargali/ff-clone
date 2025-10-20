@@ -2,7 +2,7 @@ import { APIError } from '../middleware/error.middleware.js';
 import db from './database.service.js';
 import { WebhookBodyParams } from '../middleware/validators/webhook.body.validator.js';
 import summarizerService from './summarizer.service.js';
-import { MeetingNoteStatus } from '../../generated/prisma/index.js';
+import { MeetingNoteStatus } from '@prisma/client';
 
 class WebhookService {
 

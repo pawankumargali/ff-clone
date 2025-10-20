@@ -1,18 +1,16 @@
 import type { Meeting } from '../../utils/types.util';
-import StatusPill from '../StatusPill/StatusPill';
+// import StatusPill from '../StatusPill/StatusPill';
 import { fmtDate } from '../../utils/string.util';
 
 type MeetingSectionProps = {
     meetings: Meeting[],
-    refreshMeetingStatus: (uuid: string) => void
+    // refreshMeetingStatus: (uuid: string) => void
 }
-export default function MeetingSection({ meetings, refreshMeetingStatus }: MeetingSectionProps) {
+export default function MeetingSection({ meetings }: MeetingSectionProps) {
     
     const handleOpen = (uuid: string) => {
       window.location.href = `/meetings/${uuid}`;
     };
-
-
 
     return (
         <>
@@ -25,9 +23,9 @@ export default function MeetingSection({ meetings, refreshMeetingStatus }: Meeti
                 <tr>
                 <th>Title</th>
                 <th className="th-hide-sm">Link</th>
-                <th>Status</th>
+                {/* <th>Status</th> */}
                 <th>Created</th>
-                {/* <th className="th-actions">Refresh</th> */}
+                <th className="th-actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,15 +37,15 @@ export default function MeetingSection({ meetings, refreshMeetingStatus }: Meeti
                     </button>
                     </td>
                     <td className="td-hide-sm">{m.link || <span className="muted">—</span>}</td>
-                    <td>
+                    {/* <td>
                     <StatusPill status={m.noteStatus} />
-                    </td>
+                    </td> */}
                     <td>{fmtDate(m.createdAt)}</td>
-                    {/* <td className="td-actions">
-                    <button className="ghost-btn" onClick={() => refreshMeetingStatus(m.uuid)} aria-label={`View ${m.title}`}>
+                    <td className="td-actions">
+                    <button className="ghost-btn" onClick={() => handleOpen(m.uuid)} aria-label={`View ${m.title}`}>
                         View
                     </button>
-                    </td> */}
+                    </td>
                 </tr>
                 ))}
             </tbody>

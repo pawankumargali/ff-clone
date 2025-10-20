@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { MeetingNoteStatus } from '../../../generated/prisma/index.js';
+import { MeetingNoteStatus } from '@prisma/client';
 
 
 export const WebhookBodyParamsSchema = z.object({

@@ -82,8 +82,14 @@ export default function Dashboard({}: DashboardProps) {
         return;
       }
       const durationInSecs = await getAudioDuration(fileInfo);
-      if(durationInSecs > (5.1*60) ) {
-        console.error("file too large only audio files with track 5 mins or less are allowed");
+
+      if(
+        (!fileInfo.type.includes("audio")) ||
+        (fileInfo.size > (60*1024*1024)) ||
+        (durationInSecs > (5.1*60) )
+      ) {
+        console.error("Only audio files under 60 MB and under 5 mins track length are allowed. Please try again.");
+        window.alert("Only audio files under 60 MB and under 5 mins track length are allowed. Please try again.");
         return;
       }
       const fileName = fileInfo?.name ? `${fileInfo.name}_${Date.now()}` : `${generateRandomUUID()}_${Date.now()}`;
@@ -124,9 +130,9 @@ export default function Dashboard({}: DashboardProps) {
       navigate("/record")
     };
 
-    const handleRefreshMeetingStatus = () => {
-      alert("Refresh Meeting Status Clicked");
-    }
+    // const handleRefreshMeetingStatus = () => {
+    //   alert("Refresh Meeting Status Clicked");
+    // }
 
 
 
@@ -149,7 +155,6 @@ export default function Dashboard({}: DashboardProps) {
         ) : (
           <MeetingSection 
             meetings={meetings}
-            refreshMeetingStatus={handleRefreshMeetingStatus}
           />
         )}
       </section>

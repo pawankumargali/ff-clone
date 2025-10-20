@@ -1,0 +1,17 @@
+# Dependencies & build output
+node_modules
+dist
+coverage
+
+# Local env/config
+.env
+.env.*
+.npmrc
+
+# Tooling / VCS noise
+.git
+.gitignore
+.vscode
+.DS_Store
+npm-debug.log*
+yarn-error.log*

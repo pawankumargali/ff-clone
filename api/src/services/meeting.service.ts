@@ -1,7 +1,7 @@
 import { APIError } from '../middleware/error.middleware.js';
 import { generateRandomUUID, slugify } from '../utils/string.util.js';
 import { CreateMeetingParams } from '../middleware/validators/create.meeting.validator.js';
-import { Meeting, MeetingNoteStatus } from '../../generated/prisma/index.js';
+import { Meeting, MeetingNoteStatus } from '@prisma/client';
 import db from './database.service.js';
 import { createMeetingUploadPresignedUrl } from './upload.service.js';
 import { GenerateUploadPresignBody } from '../middleware/validators/meeting.generate.presign.validator.js';
@@ -65,12 +65,11 @@ class MeetingService {
         }
     }
 
-    async getByUuid(uuid: string, userId: number) {
+    async getByUuid(uuid: string) {
         try {
             const meeting = await db.meeting.findUnique({
                 where: {
-                    uuid,
-                    userId
+                    uuid
                 }
             });
             if(!meeting)

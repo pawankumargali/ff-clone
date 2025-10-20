@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { CreateMeetingParams} from '../middleware/validators/create.meeting.validator.js';
 import meetingService from '../services/meeting.service.js';
 import { GenerateUploadPresignBody } from '../middleware/validators/meeting.generate.presign.validator.js';
-import { User } from '../../generated/prisma/index.js';
+import { User } from '@prisma/client';
 import { APIError } from '../middleware/error.middleware.js';
 
 
@@ -41,7 +41,7 @@ export async function getUserMeeting(req: Request, res: Response, next: NextFunc
     if (!meetingUuid || typeof meetingUuid !== 'string') {
       throw new APIError(404, 'Invalid meeting id');
     }
-    const data = await meetingService.getByUuid(meetingUuid, user.id);
+    const data = await meetingService.getByUuid(meetingUuid);
     return res.status(200).json({ message: 'User meeting fetched successfully', data });
   } catch (error) {
     next(error);

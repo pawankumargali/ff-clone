@@ -3,7 +3,7 @@ import { generateToken } from '../utils/jwt.util.js';
 import { APIError } from '../middleware/error.middleware.js';
 import config from '../../config.js'
 import db from '../services/database.service.js'
-import { User } from '../../generated/prisma/index.js';
+import { User } from '@prisma/client';
 
 
 export async function LoginUserOAuth(

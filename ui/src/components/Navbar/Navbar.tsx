@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router";
 import CtaIcon from "../../assets/CtaIcon/CtaIcon";
-import BackIcon from "../../assets/BackIcon.tsx/BackIcon";
+import BackIcon from "../../assets/BackIcon/BackIcon";
 import RecordIcon from "../../assets/RecordIcon/RecordIcon";
+import { Fragment } from "react/jsx-runtime";
+import { logoutUser } from "../../services/auth.service";
 
 type NavbarProps = {
   showCtas?: boolean;
@@ -21,6 +23,12 @@ export default function Navbar({
 
   const goBack = () => {
     navigate("/");
+  }
+
+  const handleLogout = (e:any) => {
+    e.preventDefault();
+    logoutUser();
+    navigate('/login');
   }
 
   return (
@@ -45,18 +53,23 @@ export default function Navbar({
       {/* spacer column (keeps grid structure tidy) */}
       <div />
 
-      {showCtas && (
+      
         <div className="dash-ctas">
-          <button className="cta-btn" onClick={uploadMeetingHandler} aria-label="Upload Meeting Audio">
-            <CtaIcon />
-            <span>Upload Meeting Audio</span>
-          </button>
-          <button className="cta-btn" onClick={recordMeetingHandler} aria-label="Record New Meeting">
-            <RecordIcon />
-            <span>Record New Meeting</span>
-          </button>
+          {showCtas && (
+            <Fragment >
+            <button className="cta-btn" onClick={uploadMeetingHandler} aria-label="Upload Meeting Audio">
+              <CtaIcon />
+              <span>Upload Meeting Audio</span>
+            </button>
+            <button className="cta-btn" onClick={recordMeetingHandler} aria-label="Record New Meeting">
+              <RecordIcon />
+              <span>Record New Meeting</span>
+            </button>
+            </Fragment>)}
+            <button className="cta-btn" onClick={handleLogout} aria-label="Record New Meeting">
+              <span>Logout</span>
+            </button>
         </div>
-      )}
     </header>
   );
 }
