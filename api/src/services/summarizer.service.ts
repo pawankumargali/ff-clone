@@ -3,7 +3,6 @@ import { MeetingNoteStatus } from '@prisma/client';
 import db from './database.service.js';
 import meetingService from './meeting.service.js';
 import openai from '../utils/openai.util.js';
-import { no } from 'zod/v4/locales';
 
 class SummarizerService {
     private readonly SYSTEM_PROMPT = "You are a precise meeting-notes generator. Given a raw meeting transcript extract meeting notes strictly as per the JSON schema. Use UTC for dates. No extra text.";
